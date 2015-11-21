@@ -2,9 +2,13 @@
 <html>
 <head>
 	<title>center</title>
+    <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="layout.css">
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="layout.js"></script>
+    <link rel="stylesheet" type="text/css" href="box-style.css">
+    <link rel="stylesheet" type="text/css" href="grid.css">
+    <link rel="stylesheet" type="text/css" href="list.css">
+    <link rel="stylesheet" type="text/css" href="center.css">
+    <link rel="stylesheet" type="text/css" href="three.css">        
 </head>
 <body>
 	<button class="less">-</button>
@@ -13,9 +17,36 @@
 	<button class="button-center">center</button>
 	<button class="button-three">three</button>
 	<button class="more">+</button>
-
 	<div class="container">
 		<!-- <div class="center"></div> -->
+		<div class="right-top">
+            <div class="box">
+                <div class="box">
+                </div>
+            </div>
+            <canvas class="triangle box"></canvas>
+        </div>
+        <div class="left-top ">
+            <div class="box"></div>
+            <div class="box">
+                <canvas class="triangle box"></canvas>
+            </div>
+        </div>
+        <div class="right-bottom">
+            <div class="box">
+                <div class="box"></div>
+            </div>
+        </div>
+        <div class="left-bottom">
+            <div class="box">
+                <canvas class="hexagon box"></canvas>
+                <canvas class="circle box"></canvas>
+            </div>
+        </div>
 	</div>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="layout.js"></script>
+    <script type="text/javascript" src="animation.js"></script>
 </body>
 </html>
