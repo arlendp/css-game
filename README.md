@@ -1,9 +1,3 @@
-# cssgame文档
-
-标签（空格分隔）： 文档 cssgame
-
----
-
 # css-game
 
 ---
