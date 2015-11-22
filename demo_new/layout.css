@@ -3,6 +3,9 @@ html,body {
     margin: 0;
     background-color: #000000;
 }
+.location-center {
+    text-align: center;
+}
 button {
 	font-family: 'Helvetica Neue', arial, sans-serif;
 	display: inline-block;

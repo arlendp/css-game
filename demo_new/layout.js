@@ -1,11 +1,7 @@
-
-// grid变量
-var n; 
-// list变量
-var m; 
-var a;
-var b;
-
+var n; // grid变量 
+var m; // list变量
+var a; // 定义长度
+var b; // 定义宽度
 // 几种预先设置好的结构
 var style = [];
 style[0] = '<div class="style-1"><div class="box"><canvas class="triangle box"><div class="box"></div></canvas></div></div>';
@@ -37,8 +33,24 @@ function gridDivide(x) {
             "width": a,
             "height": b
         }).appendTo($(".container"));
+
+        // getRandomBox().appendTo($("<div class='grid-in'></div>")).appendTo($("<div class='grid-one'></div>")).css({
+        //     "width": a,
+        //     "height": b
+        // }).appendTo($(".container"));
     }
-    randomAndAnimateBox();
+}
+//窗口监听事件下改变长宽
+function gridChange(x) {
+    var x;
+    a = 1 / x * ($(".container").width() - 2);
+    b = 1 / x * ($(".container").height() - 2);
+    for (var i = 0; i < x * x; i++) {
+        $(".grid-one").css({
+            "width": a,
+            "height": b
+        });
+    }
 }
 
 // 划分列表
@@ -52,14 +64,22 @@ function listDivide(y) {
             "width": a
         }).appendTo($(".container"));
     }
-    randomAndAnimateBox();
+}
+//窗口监听事件下改变长宽
+function listChange(y) {
+    var y;
+    a = 1 / y * ($(".container").width() - 2);
+    for (var j = 0; j < y * y; j++) {
+        $(".list-one").css({
+            "width": a
+        });
+    }
 }
 
 // 取中心部分
 function centerDivide() {
     $(".container").empty();
     $("<div class='center'></div>").append(getRandomBox()).appendTo($(".container"));
-    randomAndAnimateBox();
 }
 
 // 划分三部分
@@ -68,44 +88,56 @@ function threeDivide() {
     $("<div class='head'></div>").append(getRandomBox()).appendTo($(".container"));
     $("<div class='left'></div>").append(getRandomBox()).appendTo($(".container"));
     $("<div class='right'></div>").appendTo($(".container"));
-    randomAndAnimateBox();
 }
 
 $(document).ready(function() {
     $(".button-grid").click(function() {
         n = 2;
         gridDivide(n);
+        randomAndAnimateBox();
     })
     $(".button-list").click(function() {
         m = 2;
         listDivide(m);
+        randomAndAnimateBox();
     })
     $(".button-center").click(function() {
         centerDivide();
+        randomAndAnimateBox();
     })
     $(".button-three").click(function() {
         threeDivide();
+        randomAndAnimateBox();
     })
 
     // 减少划分
     $(".less").click(function() {
-            if ($(".container").children().hasClass("grid-one") == true) {
-                n = n - 1;
-                if (n > 0) gridDivide(n);
-            }
-            if ($(".container").children().hasClass("list-one") == true) {
-                m = m - 1;
-                if (m > 0) listDivide(m);
-            }
-            if ($(".container").children().hasClass("center") == true) {
+        if ($(".container").children().hasClass("grid-one") == true) {
+            n = n - 1;
+            if (n > 0) gridDivide(n);
+            else n = 1;
+        }
+        if ($(".container").children().hasClass("list-one") == true) {
+            m = m - 1;
+            if (m > 0) listDivide(m);
+            else m = 1;
+        }
+        if ($(".container").children().hasClass("center") == true) {
+            if ($(".center").prevAll().length > 0) {
                 $(".center:last").remove();
-            }
-            if ($(".container").children().hasClass("head") == true) {
+            }          
+        }
+        if ($(".container").children().hasClass("head") == true) {
+            //if ($(".center").prevAll().length > 0)有三个类无法完全查询.head
+            var head = document.getElementsByClassName("head");
+            if (head.length > 1) {
                 $(".head:last").remove();
                 $(".left:last").remove();
                 $(".right:last").remove();
             }
-        })
+        }
+        randomAndAnimateBox();
+    })
     // 增加划分
     $(".more").click(function() {
         if ($(".container").children().hasClass("grid-one") == true) {
@@ -127,15 +159,17 @@ $(document).ready(function() {
         randomAndAnimateBox();
     })
 
-    // 判断网格还是列表进行窗口监听
-    // $(window).resize(function() {
-    //     if ($(".container").children().hasClass("grid-one") == true) {
-    //         gridDivide(n);
-    //     }
-    //     if ($(".container").children().hasClass("list-one") == true) {
-    //         listDivide(m);
-    //     }
-    // })
+    //判断网格还是列表进行窗口监听
+    $(window).resize(function() {
+        if ($(".container").children().hasClass("grid-one") == true) {
+            gridChange(n); 
+            animateBox();
+        }
+        if ($(".container").children().hasClass("list-one") == true) {
+            listChange(m);
+            animateBox();
+        }
+    })
 })
 
 function getRandomBox() {
@@ -156,21 +190,10 @@ function getRandomColor() {
     }
     return color;
 }
-
 function randomColor() {
     var box = document.getElementsByClassName("box");
     for (var i = 0; i < box.length; i++) {
         box[i].style.backgroundColor = getRandomColor();
-    }
-}
-
-function randomSizeAndLocation() {
-    var box = document.getElementsByClassName("box");
-    for (var i = 0; i < box.length; i++) {
-        box[i].style.left = getRandomLocation();
-        box[i].style.top = getRandomLocation();
-        box[i].style.width = getRandomSize();
-        box[i].style.height = getRandomSize();
     }
 }
 
@@ -180,6 +203,15 @@ function getRandomSize() {
 
 function getRandomLocation() {
     return Math.floor(Math.random() * 50) + "%";
+}
+function randomSizeAndLocation() {
+    var box = document.getElementsByClassName("box");
+    for (var i = 0; i < box.length; i++) {
+        box[i].style.left = getRandomLocation();
+        box[i].style.top = getRandomLocation();
+        box[i].style.width = getRandomSize();
+        box[i].style.height = getRandomSize();
+    }
 }
 
 function randomAndAnimateBox() {
